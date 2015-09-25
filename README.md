@@ -11,7 +11,7 @@ Script to save the compiled output files (.php etc) to static .html files.
 
 * Download or clone the project and `cd` into the project directory
 * If you don't have Nokogiri already installed, type `gem install nokogiri`
-* Edit the `TOP_LEVEL_URL` constant inside the `static_sitemaker.rb` file to point to the homepage of your website and the `OUTPUT_DIR` constant to the path you want the static files to be saved in "note it must end in `/` and cannot be the `~` form of path"
+* Edit the `TOP_LEVEL_URL` constant inside the `static_sitemaker.rb` file to point to the homepage of your website and the `OUTPUT_DIR` constant to the path you want the static files to be saved in (note it must end in `/` and cannot be the `~` form of path)
 
 ##Notes
 
