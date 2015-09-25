@@ -8,10 +8,12 @@ require 'open-uri'
 load 'ag_url.rb'
 
 TOP_LEVEL_URL = AG_URL::Url.new "http://allengarvey.com"
-OUTPUT_DIR = "~/Documents/" #note trailing slash
-FILE_EXTENSION = '.php' #.html or .php
+#add trailing slash to end of output dir and do not use ~/ paths as this will not work- use full path
+OUTPUT_DIR = "/Users/Allen\ X/Desktop/allengarvey/"
+DEFAULT_FILE_EXTENSION = '.html' #.html or .php
 FILE_EXTENSIONS = ['.php', '.html', '/'] #file extensions to staticize
 DEFAULT_FILE_NAME = 'index' #used for files with out names, such as dir root '/'
+OVERWRITE_OUTPUT_FILES = false
 
 $page_urls = []
 
@@ -31,23 +33,25 @@ end
 def save_page_files(url)
 	page = Nokogiri::HTML(open(url.url))
 	path = url.relative_path
-	if path =~ /\/$/
-		path += DEFAULT_FILE_NAME
+	if url.file_extension == '/'
+		path = path.gsub(/\/+$/, '') + '/' + DEFAULT_FILE_NAME
 	end
 	path.gsub!(/^\/+/, '')
-	full_file_name = OUTPUT_DIR + path + FILE_EXTENSION
+	full_file_name = OUTPUT_DIR + path + DEFAULT_FILE_EXTENSION
 	# puts full_file_name
-	FileUtils.mkdir_p full_file_name
-	File.open(full_file_name, 'a') {|f| f.write(page) }
+	FileUtils.mkdir_p(OUTPUT_DIR + url.enclosing_dir.gsub(/^\/+/, ''))
+	write_flag = OVERWRITE_OUTPUT_FILES ? 'w' : 'a'
+	File.open(full_file_name, write_flag) {|f| f.write(page) }
 end
 
-
+puts "Building list of files in site..."
 build_url_list(TOP_LEVEL_URL)
+puts "File list complete. Saving files to #{OUTPUT_DIR}..."
 
+# puts $page_urls
 $page_urls.each do |url|
 	save_page_files(url)
 end
-
 
 
 
