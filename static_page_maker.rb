@@ -3,13 +3,14 @@
 #you will also have to move over all your static assents i.e. CSS, JS, txt and images yourself manually
 
 require 'fileutils'
-# require 'nokogiri'
+require 'nokogiri'
 load 'ag_url.rb'
 
 TOP_LEVEL_URL = AG_URL::Url.new "http://www.allengarvey.co"
 OUTPUT_DIR = "~/Documents/" #note trailing slash
 FILE_EXTENSION = '.php' #.html or .php
 FILE_EXTENSIONS = ['.php', '.html', '/'] #file extensions to staticize
+DEFAULT_FILE_NAME = 'index' #used for files with out names, such as dir root '/'
 
 page_urls = []
 build_url_list()
@@ -34,6 +35,10 @@ end
 #accepts argument of type AG_URL::Url
 def save_page_files(url)
 	page = Nokogiri::HTML(open(url.url))
+	path = url.relative_path
+	if path ~= /\/$/
+		path += DEFAULT_FILE_NAME
+	end
 	full_file_name = OUTPUT_DIR + url.relative_path + FILE_EXTENSION
 	FileUtils.mkdir_p full_file_name
 	File.open(full_file_name, 'a') {|f| f.write(page) }
