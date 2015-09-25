@@ -16,6 +16,14 @@ module AG_URL
 			end
 		end
 
+		def enclosing_dir()
+			if file_extension() == '/'
+				relative_path()
+			else
+				relative_path().gsub(/\/[^\/]+$/, '')
+			end
+		end
+
   		def tld()
   			@url.gsub(/^https?:\/\/(www.)?|\b\/.*$/, '')
   		end
@@ -34,7 +42,7 @@ module AG_URL
 		end
 
 		def <=> other
-    		@url <=> other.url
+    		@url.gsub(/\/+$/, '') <=> other.url.gsub(/\/+$/, '')
   		end
 	end
 end
