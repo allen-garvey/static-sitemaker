@@ -34,14 +34,15 @@ def save_page_files(url)
 	if path =~ /\/$/
 		path += DEFAULT_FILE_NAME
 	end
-	full_file_name = OUTPUT_DIR + url.relative_path + FILE_EXTENSION
+	path.gsub!(/^\/+/, '')
+	full_file_name = OUTPUT_DIR + path + FILE_EXTENSION
+	# puts full_file_name
 	FileUtils.mkdir_p full_file_name
 	File.open(full_file_name, 'a') {|f| f.write(page) }
 end
 
 
 build_url_list(TOP_LEVEL_URL)
-puts $page_urls
 
 $page_urls.each do |url|
 	save_page_files(url)
