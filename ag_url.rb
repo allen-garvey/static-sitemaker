@@ -9,7 +9,7 @@ module AG_URL
 
 		def file_extension()
 			path = relative_path()
-			if path =~ /\/$|\/[^.]+$/
+			if path !~ /\./ and path =~ /\/$|\/[^.]+$/
 				'/'
 			else
 				path.scan(/\.[a-z]+\/?$/i)[0].gsub(/\//, '')
@@ -20,7 +20,12 @@ module AG_URL
 			if file_extension() == '/'
 				relative_path()
 			else
-				relative_path().gsub(/\/[^\/]+$/, '')
+				dir = relative_path().gsub(/\/[^\/]+\/?$/, '')
+				if dir == ''
+					'/'
+				else
+					dir
+				end
 			end
 		end
 
