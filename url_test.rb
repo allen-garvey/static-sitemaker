@@ -27,11 +27,12 @@ class TestAG_URL < Test::Unit::TestCase
   def test_file_extension
   	assert_equal('/', AG_URL::Url.new("http://www.allengarvey.com").file_extension)
   	assert_equal('.png', AG_URL::Url.new("http://www.allengarvey.com/example.png").file_extension)
+  	assert_equal('.php', AG_URL::Url.new("http://www.allengarvey.com/example.php/").file_extension)
   end
   def test_enclosing_dir
   	assert_equal('/', AG_URL::Url.new("http://www.allengarvey.com").enclosing_dir)
   	assert_equal('/', AG_URL::Url.new("http://www.allengarvey.com/index.php").enclosing_dir)
-  	assert_equal('', AG_URL::Url.new("http://www.allengarvey.com/index.php").enclosing_dir)
+  	assert_equal('/', AG_URL::Url.new("http://www.allengarvey.com/index.php").enclosing_dir)
   	assert_equal('/hello', AG_URL::Url.new("http://www.allengarvey.com/hello/index.php").enclosing_dir)
   	assert_equal('/hello', AG_URL::Url.new("http://www.allengarvey.com/hello/index.php/").enclosing_dir)
   	assert_equal('/hello', AG_URL::Url.new("http://www.allengarvey.com/hello/index.php?something=cool").enclosing_dir)
